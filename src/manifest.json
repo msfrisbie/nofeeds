@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "NoFeeds",
+  "version": "1.0",
+  "description": "Redirects feed pages of common social media platforms to profile pages.",
+  "permissions": ["tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
