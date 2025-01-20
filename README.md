@@ -59,17 +59,15 @@ Follow these steps to create a CRX file for Chromium-based browsers:
 1. Open a terminal and navigate to the root directory of the project.
 2. Run the following command to package the extension:
    ```bash
-   chrome --pack-extension=dist --pack-extension-key=nofeeds.pem nofeeds.crx
+   chrome --pack-extension=dist
    ```
-   - Replace `nofeeds` with the path to your extension's source directory.
-   - If you don’t already have a private key (`nofeeds.pem`), the above command will generate one for you.
 3. The packaged CRX file will be created in the same directory as the source directory.
 
 > **Note:** CRX files are specific to Chromium browsers.
 
 ---
 
-## Validating the CRX File (Chromium Browsers Only)
+## Validating the CRX File
 
 To ensure the contents of the CRX file match the `dist/` directory:
 
@@ -84,7 +82,7 @@ To ensure the contents of the CRX file match the `dist/` directory:
    ```
    - This command recursively compares both directories and lists any differences.
 
-If no differences are found, the CRX file was correctly generated.
+If no differences are found, the CRX file matches the source code.
 
 ---
 
@@ -93,18 +91,21 @@ If no differences are found, the CRX file was correctly generated.
 To extend the functionality of NoFeeds to redirect additional social media sites:
 
 1. Open the extension's source code located in the `dist/` directory.
-2. Locate the configuration file or script where the list of social media sites is defined (e.g., `redirects.js` or a similar file).
+2. Locate the `background.js` file where the list of social media sites is defined.
 3. Add an entry for the new social media site with the following structure:
    ```javascript
-   const redirects = {
-       "www.example.com": "/profile",
-       // Add your site below
-       "www.newsite.com": "/your-profile-path"
-   };
+    const redirectRules = [
+        ...
+        {
+            // The full feed URL
+            feedUrl: "https://www.newsite.com/feed/",
+            // The URL to redirect to
+            profileUrl: "https://newsite.com/profile/",
+        },
+    ]
    ```
    - Replace `www.newsite.com` with the domain of the social media site.
-   - Replace `/your-profile-path` with the path to the profile or desired redirection page.
-   - Ensure the profile URL is the generic profile redirect URL for the site. For example, `facebook.com/me` redirects to your authenticated profile page on Facebook.
+   - For best results, ensure the profile URL is the generic profile redirect URL for the site. For example, `facebook.com/me` redirects to the current authenticated profile page.
 4. Save your changes.
 5. Reload the extension in Chrome:
    - Go to `chrome://extensions`.
